@@ -69,5 +69,133 @@ public class Event {
     public void onUpdate() {
         modifiedAt = LocalDateTime.now();
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public int getMaxParticipants() {
+        return maxParticipants;
+    }
+
+    public void setMaxParticipants(int maxParticipants) {
+        this.maxParticipants = maxParticipants;
+    }
+
+    public int getMinParticipants() {
+        return minParticipants;
+    }
+
+    public void setMinParticipants(int minParticipants) {
+        this.minParticipants = minParticipants;
+    }
+
+    public BigDecimal getPriceMin() {
+        return priceMin;
+    }
+
+    public void setPriceMin(BigDecimal priceMin) {
+        this.priceMin = priceMin;
+    }
+
+    public BigDecimal getPriceMax() {
+        return priceMax;
+    }
+
+    public void setPriceMax(BigDecimal priceMax) {
+        this.priceMax = priceMax;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
+
+    public User getOrganizedBy() {
+        return organizedBy;
+    }
+
+    public void setOrganizedBy(User organizedBy) {
+        this.organizedBy = organizedBy;
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
+    }
+
+    public List<Participation> getParticipations() {
+        return participations;
+    }
+
+    public void setParticipations(List<Participation> participations) {
+        this.participations = participations;
+    }
+
+    public Set<CommunityTag> getCommunityTags() {
+        return communityTags;
+    }
+
+    public void setCommunityTags(Set<CommunityTag> communityTags) {
+        this.communityTags = communityTags;
+    }
+
+    public Set<AccessibilityTag> getAccessibilityTags() {
+        return accessibilityTags;
+    }
+
+    public void setAccessibilityTags(Set<AccessibilityTag> accessibilityTags) {
+        this.accessibilityTags = accessibilityTags;
+    }
 }
 

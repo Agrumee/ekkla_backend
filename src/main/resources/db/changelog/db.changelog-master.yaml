@@ -1,0 +1,236 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: agrumee
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: pseudo
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: profile_picture
+                  type: VARCHAR(255)
+              - column:
+                  name: birth_date
+                  type: DATE
+              - column:
+                  name: bio
+                  type: TEXT
+              - column:
+                  name: job
+                  type: VARCHAR(255)
+              - column:
+                  name: pronouns
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 2
+      author: agrumee
+      changes:
+        - createTable:
+            tableName: accessibility_tag
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: TEXT
+
+  - changeSet:
+      id: 3
+      author: agrumee
+      changes:
+        - createTable:
+            tableName: community_tag
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: TEXT
+
+  - changeSet:
+      id: 4
+      author: agrumee
+      changes:
+        - createTable:
+            tableName: place
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: address, type: VARCHAR(255) }
+              - column: { name: city, type: VARCHAR(255) }
+              - column: { name: country, type: VARCHAR(255) }
+              - column: { name: postal_code, type: VARCHAR(255) }
+              - column: { name: google_place_id, type: VARCHAR(255) }
+              - column: { name: is_private, type: BOOLEAN }
+              - column: { name: latitude, type: DOUBLE }
+              - column: { name: longitude, type: DOUBLE }
+              - column: { name: created_at, type: TIMESTAMP }
+
+  - changeSet:
+      id: 5
+      author: agrumee
+      changes:
+        - createTable:
+            tableName: event
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: name, type: VARCHAR(255) }
+              - column: { name: description, type: TEXT }
+              - column: { name: image_url, type: VARCHAR(255) }
+              - column: { name: date, type: TIMESTAMP }
+              - column: { name: created_at, type: TIMESTAMP }
+              - column: { name: modified_at, type: TIMESTAMP }
+              - column: { name: price_min, type: 'NUMERIC(38,2)' }
+              - column: { name: price_max, type: 'NUMERIC(38,2)' }
+              - column: { name: min_participants, type: INTEGER }
+              - column: { name: max_participants, type: INTEGER }
+              - column: { name: organized_by, type: UUID }
+              - column: { name: place_id, type: BIGINT }
+        - addForeignKeyConstraint:
+            baseTableName: event
+            baseColumnNames: organized_by
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_event_organized_by
+        - addForeignKeyConstraint:
+            baseTableName: event
+            baseColumnNames: place_id
+            referencedTableName: place
+            referencedColumnNames: id
+            constraintName: fk_event_place
+
+  - changeSet:
+      id: 6
+      author: agrumee
+      changes:
+        - createTable:
+            tableName: event_accessibility_tags
+            columns:
+              - column: { name: event_id, type: BIGINT }
+              - column: { name: accessibility_tag_id, type: BIGINT }
+        - addPrimaryKey:
+            tableName: event_accessibility_tags
+            columnNames: event_id, accessibility_tag_id
+        - addForeignKeyConstraint:
+            baseTableName: event_accessibility_tags
+            baseColumnNames: event_id
+            referencedTableName: event
+            referencedColumnNames: id
+            constraintName: fk_event_accessibility_event
+        - addForeignKeyConstraint:
+            baseTableName: event_accessibility_tags
+            baseColumnNames: accessibility_tag_id
+            referencedTableName: accessibility_tag
+            referencedColumnNames: id
+            constraintName: fk_event_accessibility_tag
+
+  - changeSet:
+      id: 7
+      author: agrumee
+      changes:
+        - createTable:
+            tableName: event_community_tags
+            columns:
+              - column: { name: event_id, type: BIGINT }
+              - column: { name: community_tag_id, type: BIGINT }
+        - addPrimaryKey:
+            tableName: event_community_tags
+            columnNames: event_id, community_tag_id
+        - addForeignKeyConstraint:
+            baseTableName: event_community_tags
+            baseColumnNames: event_id
+            referencedTableName: event
+            referencedColumnNames: id
+            constraintName: fk_event_community_event
+        - addForeignKeyConstraint:
+            baseTableName: event_community_tags
+            baseColumnNames: community_tag_id
+            referencedTableName: community_tag
+            referencedColumnNames: id
+            constraintName: fk_event_community_tag
+
+  - changeSet:
+      id: 8
+      author: agrumee
+      changes:
+        - createTable:
+            tableName: notification
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: created_at, type: TIMESTAMP }
+              - column: { name: message, type: TEXT }
+              - column: { name: user_id, type: UUID }
+              - column: { name: event_id, type: BIGINT }
+        - addForeignKeyConstraint:
+            baseTableName: notification
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_notification_user
+        - addForeignKeyConstraint:
+            baseTableName: notification
+            baseColumnNames: event_id
+            referencedTableName: event
+            referencedColumnNames: id
+            constraintName: fk_notification_event
+
+  - changeSet:
+      id: 9
+      author: agrumee
+      changes:
+        - createTable:
+            tableName: participation
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: created_at, type: TIMESTAMP }
+              - column: { name: message, type: TEXT }
+              - column: { name: is_confirmed, type: BOOLEAN }
+              - column: { name: created_by, type: UUID }
+              - column: { name: event_id, type: BIGINT }
+        - addForeignKeyConstraint:
+            baseTableName: participation
+            baseColumnNames: created_by
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_participation_user
+        - addForeignKeyConstraint:
+            baseTableName: participation
+            baseColumnNames: event_id
+            referencedTableName: event
+            referencedColumnNames: id
+            constraintName: fk_participation_event
