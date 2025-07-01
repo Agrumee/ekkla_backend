@@ -40,7 +40,7 @@ public class Event {
     @JoinColumn(name = "organized_by")
     private User organizedBy;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "place_id")
     private Place place;
 

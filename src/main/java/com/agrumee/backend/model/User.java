@@ -3,13 +3,15 @@ package com.agrumee.backend.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     private String pseudo;
 
@@ -35,13 +37,15 @@ public class User {
     private List<Notification> notifications;
 
     // Getters & setters
-    public Long getId() {
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
+
     public String getPseudo() {
         return pseudo;
     }

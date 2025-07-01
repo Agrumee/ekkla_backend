@@ -3,6 +3,7 @@ package com.agrumee.backend.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Place {
@@ -24,8 +25,8 @@ public class Place {
 
     private String googlePlaceId; // Optionnel : utile si tu veux faire une sync Google
 
-    @OneToOne(mappedBy = "place")
-    private Event event;
+    @OneToMany(mappedBy = "place")
+    private List<Event> events;
 
     @PrePersist
     protected void onCreate() {
@@ -115,11 +116,11 @@ public class Place {
         this.googlePlaceId = googlePlaceId;
     }
 
-    public Event getEvent() {
-        return event;
+    public List<Event> getEvents() {
+        return events;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }
