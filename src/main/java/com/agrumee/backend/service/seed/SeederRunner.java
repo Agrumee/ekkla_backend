@@ -10,13 +10,13 @@ public class SeederRunner implements CommandLineRunner {
 
     @Value("${app.seeder.enabled:false}")
     private boolean seederEnabled;
+
     private final UserSeeder userSeeder;
     private final PlaceSeeder placeSeeder;
     private final EventSeeder eventSeeder;
     private final ParticipationSeeder participationSeeder;
     private final NotificationSeeder notificationSeeder;
-    private final AccessibilityTagSeeder accessibilityTagSeeder;
-    private final CommunityTagSeeder communityTagSeeder;
+    private final TagSeeder tagSeeder;
 
     public SeederRunner(
             UserSeeder userSeeder,
@@ -24,16 +24,14 @@ public class SeederRunner implements CommandLineRunner {
             EventSeeder eventSeeder,
             ParticipationSeeder participationSeeder,
             NotificationSeeder notificationSeeder,
-            AccessibilityTagSeeder accessibilityTagSeeder,
-            CommunityTagSeeder communityTagSeeder
+            TagSeeder tagSeeder
     ) {
         this.userSeeder = userSeeder;
         this.placeSeeder = placeSeeder;
         this.eventSeeder = eventSeeder;
         this.participationSeeder = participationSeeder;
         this.notificationSeeder = notificationSeeder;
-        this.accessibilityTagSeeder = accessibilityTagSeeder;
-        this.communityTagSeeder = communityTagSeeder;
+        this.tagSeeder = tagSeeder;
     }
 
     @Override
@@ -46,12 +44,10 @@ public class SeederRunner implements CommandLineRunner {
 
         userSeeder.seed(10);
         placeSeeder.seed(15);
-        accessibilityTagSeeder.seed(10);
-        communityTagSeeder.seed(10);
+        tagSeeder.seed(10); // 10 COMMUNITY + 10 ACCESSIBILITY
         eventSeeder.seed(5);
-        participationSeeder.seed(3);
+        participationSeeder.seed(50);
         notificationSeeder.seed(10);
-
 
         System.out.println("✅ Seeding terminé avec succès !");
     }

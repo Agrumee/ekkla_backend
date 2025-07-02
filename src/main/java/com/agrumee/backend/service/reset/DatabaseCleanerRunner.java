@@ -16,8 +16,7 @@ public class DatabaseCleanerRunner implements CommandLineRunner {
     private final EventRepository eventRepository;
     private final PlaceRepository placeRepository;
     private final UserRepository userRepository;
-    private final AccessibilityTagRepository accessibilityTagRepository;
-    private final CommunityTagRepository communityTagRepository;
+    private final TagRepository tagRepository;
 
     public DatabaseCleanerRunner(
             ParticipationRepository participationRepository,
@@ -25,16 +24,14 @@ public class DatabaseCleanerRunner implements CommandLineRunner {
             EventRepository eventRepository,
             PlaceRepository placeRepository,
             UserRepository userRepository,
-            AccessibilityTagRepository accessibilityTagRepository,
-            CommunityTagRepository communityTagRepository
+            TagRepository tagRepository
     ) {
         this.participationRepository = participationRepository;
         this.notificationRepository = notificationRepository;
         this.eventRepository = eventRepository;
         this.placeRepository = placeRepository;
         this.userRepository = userRepository;
-        this.accessibilityTagRepository = accessibilityTagRepository;
-        this.communityTagRepository = communityTagRepository;
+        this.tagRepository = tagRepository;
     }
 
     @Override
@@ -52,8 +49,7 @@ public class DatabaseCleanerRunner implements CommandLineRunner {
         eventRepository.deleteAll();
         placeRepository.deleteAll();
         userRepository.deleteAll();
-        accessibilityTagRepository.deleteAll();
-        communityTagRepository.deleteAll();
+        tagRepository.deleteAll();
 
         System.out.println("✅ Base de données réinitialisée !");
     }

@@ -42,7 +42,7 @@ public class Participation {
         return isConfirmed;
     }
 
-    public void setConfirmed(boolean confirmed) {
+    public void setIsConfirmed(boolean confirmed) {
         isConfirmed = confirmed;
     }
 

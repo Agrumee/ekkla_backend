@@ -6,82 +6,44 @@ databaseChangeLog:
         - createTable:
             tableName: users
             columns:
-              - column:
-                  name: id
-                  type: UUID
-                  defaultValueComputed: gen_random_uuid()
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: pseudo
-                  type: VARCHAR(255)
-              - column:
-                  name: email
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-                    unique: true
-              - column:
-                  name: password
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: profile_picture
-                  type: VARCHAR(255)
-              - column:
-                  name: birth_date
-                  type: DATE
-              - column:
-                  name: bio
-                  type: TEXT
-              - column:
-                  name: job
-                  type: VARCHAR(255)
-              - column:
-                  name: pronouns
-                  type: VARCHAR(255)
+              - column: { name: id, type: UUID, defaultValueComputed: gen_random_uuid(), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: pseudo, type: VARCHAR(255) }
+              - column: { name: email, type: VARCHAR(255), constraints: { nullable: false, unique: true } }
+              - column: { name: password, type: VARCHAR(255), constraints: { nullable: false } }
+              - column: { name: profile_picture, type: VARCHAR(255) }
+              - column: { name: birth_date, type: DATE }
+              - column: { name: bio, type: TEXT }
+              - column: { name: job, type: VARCHAR(255) }
+              - column: { name: pronouns, type: VARCHAR(255) }
 
   - changeSet:
       id: 2
       author: agrumee
       changes:
         - createTable:
-            tableName: accessibility_tag
+            tableName: tag_type
             columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-              - column:
-                  name: name
-                  type: VARCHAR(255)
-              - column:
-                  name: description
-                  type: TEXT
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: label, type: VARCHAR(50), constraints: { nullable: false, unique: true } }
+              - column: { name: description, type: TEXT }
 
   - changeSet:
       id: 3
       author: agrumee
       changes:
         - createTable:
-            tableName: community_tag
+            tableName: tag
             columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-              - column:
-                  name: name
-                  type: VARCHAR(255)
-              - column:
-                  name: description
-                  type: TEXT
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: label, type: VARCHAR(255), constraints: { nullable: false, unique: true } }
+              - column: { name: description, type: TEXT }
+              - column: { name: tag_type_id, type: BIGINT, constraints: { nullable: false } }
+        - addForeignKeyConstraint:
+            baseTableName: tag
+            baseColumnNames: tag_type_id
+            referencedTableName: tag_type
+            referencedColumnNames: id
+            constraintName: fk_tag_tag_type
 
   - changeSet:
       id: 4
@@ -106,6 +68,17 @@ databaseChangeLog:
       author: agrumee
       changes:
         - createTable:
+            tableName: event_type
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: label, type: VARCHAR(255), constraints: { nullable: false, unique: true } }
+              - column: { name: description, type: TEXT }
+
+  - changeSet:
+      id: 6
+      author: agrumee
+      changes:
+        - createTable:
             tableName: event
             columns:
               - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
@@ -121,6 +94,7 @@ databaseChangeLog:
               - column: { name: max_participants, type: INTEGER }
               - column: { name: organized_by, type: UUID }
               - column: { name: place_id, type: BIGINT }
+              - column: { name: event_type_id, type: BIGINT }
         - addForeignKeyConstraint:
             baseTableName: event
             baseColumnNames: organized_by
@@ -133,73 +107,39 @@ databaseChangeLog:
             referencedTableName: place
             referencedColumnNames: id
             constraintName: fk_event_place
-
-  - changeSet:
-      id: 6
-      author: agrumee
-      changes:
-        - createTable:
-            tableName: event_accessibility_tags
-            columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column: { name: event_id, type: BIGINT, constraints: { nullable: false } }
-              - column: { name: accessibility_tag_id, type: BIGINT, constraints: { nullable: false } }
-        - addUniqueConstraint:
-            tableName: event_accessibility_tags
-            columnNames: event_id, accessibility_tag_id
-            constraintName: uq_event_accessibility
         - addForeignKeyConstraint:
-            baseTableName: event_accessibility_tags
-            baseColumnNames: event_id
-            referencedTableName: event
+            baseTableName: event
+            baseColumnNames: event_type_id
+            referencedTableName: event_type
             referencedColumnNames: id
-            constraintName: fk_event_accessibility_event
-        - addForeignKeyConstraint:
-            baseTableName: event_accessibility_tags
-            baseColumnNames: accessibility_tag_id
-            referencedTableName: accessibility_tag
-            referencedColumnNames: id
-            constraintName: fk_event_accessibility_tag
+            constraintName: fk_event_event_type
 
   - changeSet:
       id: 7
       author: agrumee
       changes:
         - createTable:
-            tableName: event_community_tags
+            tableName: event_tags
             columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
               - column: { name: event_id, type: BIGINT, constraints: { nullable: false } }
-              - column: { name: community_tag_id, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: tag_id, type: BIGINT, constraints: { nullable: false } }
         - addUniqueConstraint:
-            tableName: event_community_tags
-            columnNames: event_id, community_tag_id
-            constraintName: uq_event_community
+            tableName: event_tags
+            columnNames: event_id, tag_id
+            constraintName: uq_event_tag
         - addForeignKeyConstraint:
-            baseTableName: event_community_tags
+            baseTableName: event_tags
             baseColumnNames: event_id
             referencedTableName: event
             referencedColumnNames: id
-            constraintName: fk_event_community_event
+            constraintName: fk_event_tag_event
         - addForeignKeyConstraint:
-            baseTableName: event_community_tags
-            baseColumnNames: community_tag_id
-            referencedTableName: community_tag
+            baseTableName: event_tags
+            baseColumnNames: tag_id
+            referencedTableName: tag
             referencedColumnNames: id
-            constraintName: fk_event_community_tag
-
+            constraintName: fk_event_tag_tag
 
   - changeSet:
       id: 8
@@ -251,3 +191,6 @@ databaseChangeLog:
             referencedTableName: event
             referencedColumnNames: id
             constraintName: fk_participation_event
+
+  - include:
+      file: db/changelog/db.changelog.01_insert_tag_event_types.yaml

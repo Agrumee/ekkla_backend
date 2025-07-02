@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 8
+      author: agrumee
+      changes:
+        - insert:
+            tableName: tag_type
+            columns:
+              - column: { name: id, valueNumeric: 1 }
+              - column: { name: label, value: 'COMMUNITY' }
+              - column: { name: description, value: 'Tags liés à la communauté' }
+        - insert:
+            tableName: tag_type
+            columns:
+              - column: { name: id, valueNumeric: 2 }
+              - column: { name: label, value: 'ACCESSIBILITY' }
+              - column: { name: description, value: 'Tags liés à l’accessibilité' }
+
+  - changeSet:
+      id: 9
+      author: agrumee
+      changes:
+        - insert:
+            tableName: event_type
+            columns:
+              - column: { name: id, valueNumeric: 1 }
+              - column: { name: label, value: 'PRIVATE' }
+              - column: { name: description, value: "Participation possible uniquement sur invitation par l·a organisateur·rice." }
+        - insert:
+            tableName: event_type
+            columns:
+              - column: { name: id, valueNumeric: 2 }
+              - column: { name: label, value: 'LIMITED' }
+              - column: { name: description, value: "Participation soumise à validation par l·a organisateur·rice." }
+        - insert:
+            tableName: event_type
+            columns:
+              - column: { name: id, valueNumeric: 3 }
+              - column: { name: label, value: 'PUBLIC' }
+              - column: { name: description, value: "Participation automatiquement validée, sans intervention de l·a organisateur·rice." }

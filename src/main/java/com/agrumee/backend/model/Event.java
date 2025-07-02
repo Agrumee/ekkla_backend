@@ -12,7 +12,8 @@ import java.util.Set;
 @Entity
 public class Event {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -25,8 +26,6 @@ public class Event {
     private String imageUrl;
 
     private int maxParticipants;
-
-    private int minParticipants;
 
     private BigDecimal priceMin;
 
@@ -48,16 +47,14 @@ public class Event {
     private List<Participation> participations = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "event_community_tags",
+    @JoinTable(name = "event_tags",
             joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "community_tag_id"))
-    private Set<CommunityTag> communityTags = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "event_accessibility_tags",
-            joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "accessibility_tag_id"))
-    private Set<AccessibilityTag> accessibilityTags = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "event_type_id", nullable = false)
+    private EventType eventType;
 
     @PrePersist
     public void onCreate() {
@@ -69,6 +66,9 @@ public class Event {
     public void onUpdate() {
         modifiedAt = LocalDateTime.now();
     }
+
+    // Getters & setters
+
 
     public Long getId() {
         return id;
@@ -116,14 +116,6 @@ public class Event {
 
     public void setMaxParticipants(int maxParticipants) {
         this.maxParticipants = maxParticipants;
-    }
-
-    public int getMinParticipants() {
-        return minParticipants;
-    }
-
-    public void setMinParticipants(int minParticipants) {
-        this.minParticipants = minParticipants;
     }
 
     public BigDecimal getPriceMin() {
@@ -182,20 +174,19 @@ public class Event {
         this.participations = participations;
     }
 
-    public Set<CommunityTag> getCommunityTags() {
-        return communityTags;
+    public Set<Tag> getTags() {
+        return tags;
     }
 
-    public void setCommunityTags(Set<CommunityTag> communityTags) {
-        this.communityTags = communityTags;
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 
-    public Set<AccessibilityTag> getAccessibilityTags() {
-        return accessibilityTags;
+    public EventType getEventType() {
+        return eventType;
     }
 
-    public void setAccessibilityTags(Set<AccessibilityTag> accessibilityTags) {
-        this.accessibilityTags = accessibilityTags;
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
     }
 }
-

@@ -40,6 +40,7 @@ public class ParticipationSeeder {
             participation.setMessage(faker.lorem().sentence());
             participation.setCreatedBy(users.get(random.nextInt(users.size())));
             participation.setEvent(events.get(random.nextInt(events.size())));
+            participation.setIsConfirmed(random.nextDouble() < 0.9);
             participationRepository.save(participation);
         });
     }
