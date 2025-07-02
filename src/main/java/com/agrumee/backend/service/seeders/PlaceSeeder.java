@@ -21,6 +21,7 @@ public class PlaceSeeder {
         IntStream.range(0, count).forEach(i -> {
             Place place = new Place();
             place.setAddress(faker.address().fullAddress());
+            place.setCity(faker.address().city());
             place.setLatitude(Double.parseDouble(faker.address().latitude()));
             place.setLongitude(Double.parseDouble(faker.address().longitude()));
             placeRepository.save(place);
