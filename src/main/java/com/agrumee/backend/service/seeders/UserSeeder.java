@@ -20,7 +20,7 @@ public class UserSeeder {
     public void seed(int count) {
         IntStream.range(0, count).forEach(i -> {
             User user = new User();
-            user.setPseudo(faker.internet().username());
+            user.setUsername(faker.internet().username());
             user.setEmail(faker.internet().emailAddress());
             user.setPassword(faker.internet().password());
             user.setProfilePicture(faker.avatar().image());

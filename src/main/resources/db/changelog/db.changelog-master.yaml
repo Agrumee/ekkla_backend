@@ -7,7 +7,7 @@ databaseChangeLog:
             tableName: users
             columns:
               - column: { name: id, type: UUID, defaultValueComputed: gen_random_uuid(), constraints: { primaryKey: true, nullable: false } }
-              - column: { name: pseudo, type: VARCHAR(255) }
+              - column: { name: username, type: VARCHAR(255) }
               - column: { name: email, type: VARCHAR(255), constraints: { nullable: false, unique: true } }
               - column: { name: password, type: VARCHAR(255), constraints: { nullable: false } }
               - column: { name: profile_picture, type: VARCHAR(255) }

@@ -13,7 +13,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private String pseudo;
+    private String username;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -46,12 +46,12 @@ public class User {
         this.id = id;
     }
 
-    public String getPseudo() {
-        return pseudo;
+    public String getUsername() {
+        return username;
     }
 
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
