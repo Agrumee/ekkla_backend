@@ -1,4 +1,5 @@
 package com.agrumee.backend.service;
+import com.agrumee.backend.dto.RegisterRequest;
 import com.agrumee.backend.model.User;
 import com.agrumee.backend.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,4 +23,9 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(rawPassword));
         return userRepository.save(user);
     }
+
+    public User register(RegisterRequest request) {
+        return register(request.getUsername(), request.getEmail(), request.getPassword());
+    }
+
 }
